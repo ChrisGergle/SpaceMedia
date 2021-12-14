@@ -1,2 +1,0 @@
-import vlc
-import RPi.GPIO as GPIO

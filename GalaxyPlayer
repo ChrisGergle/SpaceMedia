@@ -1,0 +1,31 @@
+import vlc, os, time
+import RPi.GPIO as GPIO
+
+#Vars
+path = "Files:///home/pi/Videos/"
+nosubs = path+"Content-NoSubs.mp4"
+subs = path+"Content-Subtitles.mp4"
+splash = path+"StartScreen.mp4"
+
+
+class VLC:
+    def __init__(self):
+        self.Player = Instance('--loop')
+
+def addPlaylist(self):
+    self.mediaList = self.Player.media_list_new()
+
+def play(self)
+    self.listPlayer.play()
+def setList(self)
+    self.mediaList.add_media(self.Player.media_new(splash))
+    self.mediaList.add_media(self.Player.media_new(subs))
+    self.mediaList.add_media(self.Player.media_new(nosubs))
+    print("List Loaded")
+
+
+def Main():
+
+    
+
+
