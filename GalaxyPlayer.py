@@ -17,7 +17,7 @@ def Main():
     # Setup logs
     print(date.today())
     # Media Paths
-    path = "Files:///home/pi/Videos/"
+    path = "/home/pi/Videos/"
     nosubs = path+"Content-NoSubs.mp4"
     subs = path+"Content-Subtitles.mp4"
     splash = path+"StartScreen.mp4"
@@ -34,14 +34,14 @@ def Main():
     Media.get_mrl()
     player.set_media_list(Media_list)
 
-    playerState = {0: 'NothingSpecial',
- 1: 'Opening',
- 2: 'Buffering',
- 3: 'Playing',
- 4: 'Paused',
- 5: 'Stopped',
- 6: 'Ended',
- 7: 'Error'}
+    playerState = {'State.NothingSpecial',
+ 'State.Opening',
+ 'State.Buffering',
+ 'State.Playing',
+ 'State.Paused',
+ 'State.Stopped',
+ 'State.Ended',
+ 'State.Error'}
 
     subsPlayed = 0
     nosubsPlayed = 0
@@ -54,6 +54,7 @@ def Main():
 
         if(state == playerState[0]):
             player.play_item_at_index(0)
+            player.set_playback_mode(2)
     
         if(state == playerState[7]):
             player.play_item_at_index(0)
