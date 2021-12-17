@@ -1,14 +1,14 @@
 import vlc
 import os, time
 from datetime import *
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 #Vars
 
-#GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BCM)
 
-#GPIO.setup(17,GPIO.IN)
-#GPIO.setup(18,GPIO.IN)
+GPIO.setup(17,GPIO.IN)
+GPIO.setup(18,GPIO.IN)
 
 
 update = True #Update to false to exit
@@ -16,10 +16,6 @@ update = True #Update to false to exit
 def Main():
     # Setup logs
     print(date.today())
-    with open(str(date.today())+'.txt','w') as file:
-        file.write("words")
-
-    file.write("Yo.")
     # Media Paths
     path = "Files:///home/pi/Videos/"
     nosubs = path+"Content-NoSubs.mp4"
@@ -36,20 +32,48 @@ def Main():
     Media = Instance.media_new(url[1])
     Media_list = Instance.media_list_new(playlist)
     Media.get_mrl()
-    player.set_media(Media)
+    player.set_media_list(Media_list)
 
-    tick = 0
+    playerState = {0: 'NothingSpecial',
+ 1: 'Opening',
+ 2: 'Buffering',
+ 3: 'Playing',
+ 4: 'Paused',
+ 5: 'Stopped',
+ 6: 'Ended',
+ 7: 'Error'}
+
+    subsPlayed = 0
+    nosubsPlayed = 0
+    active = 0
+    playingMedia = 0
+
     while update:
-        state = player.get_state()
+        input = GPIO.input(17)
+        state = str(player.get_state())
 
-        if(state == 'State.NothingSpecial'):
+        if(state == playerState[0]):
             player.play_item_at_index(0)
-            #print("Playing Initial")
-            tick +=1
-        elif(state == 'State.Ended'):
-            #player.play()
-            tick +=1
-            #print("Repeat:")
+    
+        if(state == playerState[7]):
+            player.play_item_at_index(0)
+            playingMedia = 0
+        
+        if input == 1 and playingMedia == 0:
+            playingMedia = 1
+            player.play_item_at_index(1)
+            active +=1
+            nosubsPlayed +=1
+        
+        print(playingMedia)
+
+    with open(str(date.today()))+'.txt','w' as file:
+        file.write("Active Views: " + active)
+        file.write("SubsPlayed: " + subsPlayed)
+        file.write("No Subs Played: " + nosubsPlayed)
+
+
+
     
 
 
@@ -59,4 +83,5 @@ def Main():
 Main()
 
 
+def stateUpdate(player, input):
 
