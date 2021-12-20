@@ -45,7 +45,7 @@ def Main():
 
     #Setup the player
     player = Instance.media_list_player_new()
-    Media_list = Instance.media_list_new(playlist)
+    Media_list = Instance.media_list_new()
     Media_list.add_media(splash)
     Media_list.add_media(subs)
     Media_list.add_media(nosubs)
