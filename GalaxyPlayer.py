@@ -36,14 +36,14 @@ def Main():
     player.set_media_list(Media_list)
     Media_list.lock()
 
-    playerState = {'State.NothingSpecial',
+    playerState = ['State.NothingSpecial',
  'State.Opening',
  'State.Buffering',
  'State.Playing',
  'State.Paused',
  'State.Stopped',
  'State.Ended',
- 'State.Error'}
+ 'State.Error']
 
     subsPlayed = 0
     nosubsPlayed = 0
