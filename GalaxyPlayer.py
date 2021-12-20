@@ -1,38 +1,54 @@
 import vlc
 import os, time
 from tkinter import *
+from tkinter import ttk
 from datetime import *
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 
 #Vars
 
-GPIO.setmode(GPIO.BCM)
+#GPIO.setmode(GPIO.BCM)
 
-GPIO.setup(17,GPIO.IN)
-GPIO.setup(18,GPIO.IN)
+#GPIO.setup(17,GPIO.IN)
+#GPIO.setup(18,GPIO.IN)
 
 
 update = True #Update to false to exit
+########################################
+window = Tk()
+window.attributes('-fullscreen',True)
+
+class vidPlayer(Frame):
+    def __init__(self,parent):
+        
+
+
+        
+window.update()
+#######################################
 
 def Main():
     # Setup logs
     print(date.today())
+
+    subsPlayed = 0
+    nosubsPlayed = 0
+    active = 0
+    playingMedia = 0
+    
     # Media Paths
-    path = "/home/pi/Videos/"
-    nosubs = path+"Content-NoSubs.mp4"
-    subs = path+"Content-Subtitles.mp4"
-    splash = path+"StartScreen.mp4"
+    path = "/home/pi/Videos/" #Can be changed into a file-search later but for now hard-code it
+    nosubs = vlc.Media(path+"Content-NoSubs.mp4")
+    subs = vlc.Media(path+"Content-Subtitles.mp4")
+    splash = vlc.Media(path+"StartScreen.mp4")
     Instance = vlc.Instance("-f")
-    playlist = set([splash,subs,nosubs])
-    url = [str(splash),str(subs),str(nosubs)] #Yes, this looks pretty redundant. Hopefully it's not.
-
-
 
     #Setup the player
     player = Instance.media_list_player_new()
-    #Media = Instance.media_new(url[1])
     Media_list = Instance.media_list_new(playlist)
-    #Media.get_mrl()
+    Media_list.add_media(splash)
+    Media_list.add_media(subs)
+    Media_list.add_media(nosubs)
     player.set_media_list(Media_list)
     Media_list.lock()
 
@@ -45,30 +61,39 @@ def Main():
  'State.Ended',
  'State.Error']
 
-    subsPlayed = 0
-    nosubsPlayed = 0
-    active = 0
-    playingMedia = 0
+
 
     while update:
-        input = GPIO.input(17)
+        if(GPIO.input(17)==1): input = 1
+        elif(GPIO.input(18)==1): input = 2
         state = player.get_state()
 
         if(str(state) == playerState[0]):
-            player.play_item_at_index(0)
+            player.play_item(splash)
             player.set_playback_mode(2)
     
         if(str(state) == playerState[7]):
-            player.play_item_at_index(0)
+            player.play_item(splash)
             playingMedia = 0
         
-        if input == 1 and playingMedia == 0:
-            playingMedia = 1
-            player.play_item_at_index(1)
-            active +=1
-            nosubsPlayed +=1
+        try:
+            if input == 1 and playingMedia == 0:
+                playingMedia = 1
+                player.play_item(nosubs)
+                active +=1
+                nosubsPlayed +=1
+        except:
+            pass
         
-        print(playingMedia)
+        try:
+            if input == 2 and playingMedia == 0:
+                playingMedia = 1
+                player.play_item(subs)
+                active+=1
+                subsPlayed+=1
+        except:
+            pass
+
 
     with open(str(date.today()))+'.txt','w' as file:
         file.write("Active Views: " + active)
@@ -76,6 +101,16 @@ def Main():
         file.write("No Subs Played: " + nosubsPlayed)
 
 Main()
+
+
+
+playerWindow = Tk()
+width_value = playerWindow.winfo_screenwidth()
+height_value = playerWindow.winfo_screenheight()
+
+playerWindow.geometry("%dx%d+0+0" % (width_value, height_value))
+
+playerWindow.mainloop()
 
 #class BaseContainer:
  #   def __init__(self):
