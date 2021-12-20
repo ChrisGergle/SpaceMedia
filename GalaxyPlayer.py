@@ -1,5 +1,6 @@
 import vlc
 import os, time
+from tkinter import *
 from datetime import *
 import RPi.GPIO as GPIO
 
@@ -29,10 +30,11 @@ def Main():
 
     #Setup the player
     player = Instance.media_list_player_new()
-    Media = Instance.media_new(url[1])
+    #Media = Instance.media_new(url[1])
     Media_list = Instance.media_list_new(playlist)
-    Media.get_mrl()
+    #Media.get_mrl()
     player.set_media_list(Media_list)
+    Media_list.lock()
 
     playerState = {'State.NothingSpecial',
  'State.Opening',
@@ -73,16 +75,8 @@ def Main():
         file.write("SubsPlayed: " + subsPlayed)
         file.write("No Subs Played: " + nosubsPlayed)
 
-
-
-    
-
-
-
-
-    
 Main()
 
-
-def stateUpdate(player, input):
-
+#class BaseContainer:
+ #   def __init__(self):
+ #       
