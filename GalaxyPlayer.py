@@ -18,9 +18,11 @@ update = True #Update to false to exit
 window = Tk()
 window.attributes('-fullscreen',True)
 
-class vidPlayer(Frame):
-    def __init__(self,parent):
-        
+class vidFrame(Frame):
+    def __init__(self):
+        #
+        #
+        #
 
 
         
@@ -61,7 +63,7 @@ def Main():
  'State.Ended',
  'State.Error']
 
-
+    player.set_xwindow(window)
 
     while update:
         if(GPIO.input(17)==1): input = 1
