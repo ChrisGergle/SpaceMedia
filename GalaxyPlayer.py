@@ -52,13 +52,13 @@ def Main():
 
     while update:
         input = GPIO.input(17)
-        state = str(player.get_state())
+        state = player.get_state()
 
-        if(state == playerState[0]):
+        if(str(state) == playerState[0]):
             player.play_item_at_index(0)
             player.set_playback_mode(2)
     
-        if(state == playerState[7]):
+        if(str(state) == playerState[7]):
             player.play_item_at_index(0)
             playingMedia = 0
         
