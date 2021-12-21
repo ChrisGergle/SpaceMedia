@@ -19,15 +19,27 @@ window = Tk()
 window.attributes('-fullscreen',True)
 
 class vidFrame(Frame):
-    def __init__(self):
-        #
-        #
-        #
-        x = 0
+    def __init__(self, window):
+        super().__init__()
+        self['bg'] = 'black'
+        self['height'] = window.winfo_screenheight()
+        self['width'] = window.winfo_screenwidth()
+        self['bd'] = 0
+        self['container'] = True
+
+        self.parent = window
+        
+        self.player = None
+        self.videopanel = ttk.Frame(self.parent)
+        self.canvas = Tk.Canvas(self.videopanel).pack(fill=Tk.BOTH,expand=1)
+
+
+    
+        
 
 
         
-window.update()
+
 #######################################
 
 def Main():
@@ -65,9 +77,13 @@ def Main():
  'State.Ended',
  'State.Error']
 
-    Instance.set_xwindow(window)
+    
 
     while update:
+        #Keeps the window updated
+        window.update()
+
+        # Run the processes of playing videos
         if(GPIO.input(17)==1): input = 1
         elif(GPIO.input(18)==1): input = 2
         state = player.get_state()

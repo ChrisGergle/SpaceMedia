@@ -11,7 +11,7 @@ class playerFrame(Frame):
         self["relief"]=FLAT
         self["bd"]=0
         self["bg"]="black"
-        self["container"]=True
+        
         
 def window():
     window = Tk()
@@ -25,11 +25,11 @@ def window():
 def main():
     # Set up the window
     view = window()
-    frame =     
+    frame =  view.frame()
     Instance = vlc.Instance() #instantiate vlc for use
     
     player = Instance.media_player_new()
-    player.set_xwindow(view.Frame(playerFrame))
+    player.set_hwnd(label.winfo_id())
 
 
     path = "/home/pi/Videos/" #Can be changed into a file-search later but for now hard-code it
