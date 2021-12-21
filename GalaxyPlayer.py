@@ -23,6 +23,7 @@ class vidFrame(Frame):
         #
         #
         #
+        x = 0
 
 
         
@@ -54,6 +55,7 @@ def Main():
     player.set_media_list(Media_list)
     Media_list.lock()
 
+
     playerState = ['State.NothingSpecial',
  'State.Opening',
  'State.Buffering',
@@ -63,7 +65,7 @@ def Main():
  'State.Ended',
  'State.Error']
 
-    player.set_xwindow(window)
+    Instance.set_xwindow(window)
 
     while update:
         if(GPIO.input(17)==1): input = 1
