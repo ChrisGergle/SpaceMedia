@@ -93,6 +93,7 @@ def Main():
             player.set_playback_mode(2)
     
         if(str(state) == playerState[7]):
+            player
             player.play_item(splash)
             playingMedia = 0
         
@@ -130,7 +131,7 @@ height_value = playerWindow.winfo_screenheight()
 
 playerWindow.geometry("%dx%d+0+0" % (width_value, height_value))
 
-playerWindow.mainloop()
+
 
 #class BaseContainer:
  #   def __init__(self):
