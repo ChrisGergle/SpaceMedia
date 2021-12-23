@@ -68,7 +68,7 @@ d = tk.Frame(w,bg='black',bd=0)
 d.place(relwidth=1,relheight=1)
 
 ### Set our instance
-i = vlc.Instance('--mouse-hide-timeout=0')
+i = vlc.Instance('--mouse-hide-timeout=0','--vout')
 
 ### Establish the media to be imported. This is hard-coded for pi, but can be adjusted later
 path = "/home/pi/Videos/"
@@ -124,13 +124,13 @@ while update==True:
 
 
     ### Player is Nothing Special
-    if active == False and st == 0:
+    if st == 0:
         mlp.play_item(Start)
         Loop+=1
         Novid+=1
 
     ### Player is Playing
-    if st==4:
+    if st==3:
         if active == True:
             continue
         elif active == False:
@@ -148,11 +148,7 @@ while update==True:
             except:
                 print("no GPIO")
 
-    if st == 4 and active == True:
-        mlp.play_item(Start)
-        active = False 
-        Loop+=1
-        Novid+=1
+    
 
 
     ### Player is Ended
@@ -170,10 +166,10 @@ while update==True:
                 Loop+=1
             if GPIO.input(17) == 0 and GPIO.input(18)==0:
                 mlp.play_item(Start)
-                Loop+1
+                Loop+=1
                 Novid+=1
         except:
             mlp.play_item(Start)
-            Loop+1
+            Loop+=1
             Novid+=1
             print("no GPIO")
