@@ -21,6 +21,7 @@ window.attributes('-fullscreen',True)
 class vidFrame(Frame):
     def __init__(self, window):
         super().__init__()
+        Tk.Frame.__init__(self,window)
         self['bg'] = 'black'
         self['height'] = window.winfo_screenheight()
         self['width'] = window.winfo_screenwidth()
@@ -33,8 +34,6 @@ class vidFrame(Frame):
         self.videopanel = ttk.Frame(self.parent)
         self.canvas = Tk.Canvas(self.videopanel).pack(fill=Tk.BOTH,expand=1)
 
-
-    
         
 
 
@@ -50,21 +49,23 @@ def Main():
     nosubsPlayed = 0
     active = 0
     playingMedia = 0
-    
+    Instance = vlc.Instance('-f','--inpu')
     # Media Paths
     path = "/home/pi/Videos/" #Can be changed into a file-search later but for now hard-code it
-    nosubs = vlc.Media(path+"Content-NoSubs.mp4")
-    subs = vlc.Media(path+"Content-Subtitles.mp4")
-    splash = vlc.Media(path+"StartScreen.mp4")
-    Instance = vlc.Instance("-f")
+    nosubs = Instance.media_new(path+"Content-NoSubs.mp4")
+    subs = Instance.media_new(path+"Content-Subtitles.mp4")
+    splash = Instance.media_new(path+"StartScreen.mp4")
+    
 
-    #Setup the player
-    player = Instance.media_list_player_new()
+    #Set List Player
+    lPlayer = Instance.media_list_player_new()
     Media_list = Instance.media_list_new()
     Media_list.add_media(splash)
     Media_list.add_media(subs)
     Media_list.add_media(nosubs)
-    player.set_media_list(Media_list)
+    
+    
+    lPlayer.set_media_list(Media_list)
     Media_list.lock()
 
 
@@ -86,20 +87,21 @@ def Main():
         # Run the processes of playing videos
         if(GPIO.input(17)==1): input = 1
         elif(GPIO.input(18)==1): input = 2
-        state = player.get_state()
+        state = lPlayer.get_state()
+
 
         if(str(state) == playerState[0]):
             player.play_item(splash)
             player.set_playback_mode(2)
     
-        if(str(state) == playerState[7]):
-            player.play_item(splash)
+        if(str(state) == playerState[6]):
+            lPlayer.play_item(splash)
             playingMedia = 0
         
         try:
             if input == 1 and playingMedia == 0:
                 playingMedia = 1
-                player.play_item(nosubs)
+                lPlayer.play_item(nosubs)
                 active +=1
                 nosubsPlayed +=1
         except:
@@ -108,7 +110,7 @@ def Main():
         try:
             if input == 2 and playingMedia == 0:
                 playingMedia = 1
-                player.play_item(subs)
+                lPlayer.play_item(subs)
                 active+=1
                 subsPlayed+=1
         except:
@@ -124,14 +126,4 @@ Main()
 
 
 
-playerWindow = Tk()
-width_value = playerWindow.winfo_screenwidth()
-height_value = playerWindow.winfo_screenheight()
 
-playerWindow.geometry("%dx%d+0+0" % (width_value, height_value))
-
-playerWindow.mainloop()
-
-#class BaseContainer:
- #   def __init__(self):
- #       

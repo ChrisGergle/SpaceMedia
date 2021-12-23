@@ -1,47 +1,28 @@
 import vlc
-import os, time
+import os, time, tkinter as tk
 from tkinter import *
 from tkinter import ttk
 from datetime import *
-class playerFrame(Frame):
-    def __init__(self,window):
-        super().__init__()
-        self["height"]=window.winfo_screenheight()
-        self["width"]=window.winfo_screenwidth()
-        self["relief"]=FLAT
-        self["bd"]=0
-        self["bg"]="black"
-        
-        
-def window():
-    window = Tk()
-    window.attributes('-fullscreen',True)
-
-    frame_a = playerFrame(window)
-    frame_a.grid(row=0,column=0)
-
-    return window
-
-def main():
-    # Set up the window
-    view = window()
-    frame =  view.frame()
-    Instance = vlc.Instance() #instantiate vlc for use
-    
-    player = Instance.media_player_new()
-    player.set_hwnd(label.winfo_id())
+from time import sleep
 
 
-    path = "/home/pi/Videos/" #Can be changed into a file-search later but for now hard-code it
+root = Tk()
+frame = tk.Frame(root, width=700, height=600)
+frame.pack()
 
-    nosubs = vlc.Media(path+"Content-NoSubs.mp4")
-    subs = vlc.Media(path+"Content-Subtitles.mp4")
-    splash = vlc.Media(path+"StartScreen.mp4")
+display = tk.Frame(frame, bd=5)
+display.place(relwidth=1, relheight=1)
 
-    
+Instance = vlc.Instance()
+player = Instance.media_player_new()
+Media = Instance.media_new('StartScreen.mp4')
+Media.get_mrl()
+player.set_hwnd(display.winfo_id())
+player.set_media(Media)
+player.play()
+sleep(15)
 
-    
-    while True:
-        view.update()
+while player.is_playing():
+    sleep(1)
 
-main()
+root.update()
