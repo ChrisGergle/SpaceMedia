@@ -68,7 +68,7 @@ d = tk.Frame(w,bg='black',bd=0)
 d.place(relwidth=1,relheight=1)
 
 ### Set our instance
-i = vlc.Instance('--mouse-hide-timeout=0','--vout')
+i = vlc.Instance('--mouse-hide-timeout=0')
 
 ### Establish the media to be imported. This is hard-coded for pi, but can be adjusted later
 path = "/home/pi/Videos/"
