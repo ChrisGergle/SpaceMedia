@@ -34,8 +34,7 @@ class vidFrame(Frame):
         self.videopanel = ttk.Frame(self.parent)
         self.canvas = Tk.Canvas(self.videopanel).pack(fill=Tk.BOTH,expand=1)
 
-
-    lP        
+        
 
 
         
@@ -95,7 +94,7 @@ def Main():
             player.play_item(splash)
             player.set_playback_mode(2)
     
-        if(str(state) == playerState[7]):
+        if(str(state) == playerState[6]):
             lPlayer.play_item(splash)
             playingMedia = 0
         
