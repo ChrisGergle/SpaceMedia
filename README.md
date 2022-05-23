@@ -3,7 +3,7 @@
 Videos like "how it all began."
 
 ## Known Issues
- - Will randomly move onto another video during idle time
+ - Will move onto another video during idle time. This may be due to rpi hardware delaying the loop until track ends.
 
 
 ## Version Issues
